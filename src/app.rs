@@ -61,6 +61,7 @@ impl Hooks for App {
     }
 
     fn register_tasks(tasks: &mut Tasks) {
+        tasks.register(tasks::dump_contacts::DumpContacts);
         tasks.register(tasks::seed::SeedData);
     }
 
