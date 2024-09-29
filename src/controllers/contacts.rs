@@ -77,7 +77,7 @@ pub async fn show(
     State(ctx): State<AppContext>,
 ) -> Result<Response> {
     let item = load_item(&ctx, id).await?;
-    views::contacts::show(&v, &item)
+    views::contacts::show(&v)
 }
 
 #[debug_handler]
@@ -86,12 +86,16 @@ pub async fn add(
     State(ctx): State<AppContext>,
     Json(params): Json<Params>,
 ) -> Result<Response> {
-    let mut item = ActiveModel {
-        ..Default::default()
-    };
-    params.update(&mut item);
-    let item = item.insert(&ctx.db).await?;
-    views::contacts::show(&v, &item)
+    if Model::exists(&ctx.db, &params.email).await? {
+        tracing::debug!(email = params.email, "email exists");
+    } else {
+        let mut item = ActiveModel {
+            ..Default::default()
+        };
+        params.update(&mut item);
+        let item = item.insert(&ctx.db).await?;
+    }
+    views::contacts::show(&v)
 }
 
 #[debug_handler]

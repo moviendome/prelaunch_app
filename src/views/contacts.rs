@@ -16,8 +16,8 @@ pub fn list(v: &impl ViewRenderer, items: &Vec<contacts::Model>) -> Result<Respo
 /// # Errors
 ///
 /// When there is an issue with rendering the view.
-pub fn show(v: &impl ViewRenderer, item: &contacts::Model) -> Result<Response> {
-    format::render().view(v, "contacts/show.html", serde_json::json!({"item": item}))
+pub fn show(v: &impl ViewRenderer) -> Result<Response> {
+    format::render().view(v, "contacts/show.html", serde_json::json!({}))
 }
 
 /// Render a contacts create form.
